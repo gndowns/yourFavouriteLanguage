@@ -5,8 +5,12 @@
 %lex
 
 %%
-\s+               // skip whitespace
 [0-9]             return 'NUMBER';
+[a-zA-Z]          return 'ALPHA';
+"="               return '=';
+"%"           return 'PRINT';
+\n\s*             return '\n';
+[^\S\n]+          // ignore whitespace other than newlines
 <<EOF>>           return 'EOF';
 
 /lex
@@ -14,12 +18,25 @@
 // language grammar
 %%
 
-expressions
-  : e EOF
-    {console.log($1); return $1;}
+// ocaml-list-like recursive structure
+input:
+    %empty
+  | input line
   ;
 
-e :
-  NUMBER
-    {$$ = $1;}
+line:
+    EOF
+      { return $1; }
+  | '\n'
+  | expr '\n'
+  ;
+
+expr:
+    NUMBER
+      {$$ = $1;}
+  // variable assignment
+  | ALPHA '=' NUMBER
+      {$$ = $3}
+  | PRINT ALPHA
+      { console.log($2); }
   ;
