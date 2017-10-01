@@ -4,6 +4,11 @@
 
 %lex
 
+// available in grammar rules
+%{
+  var parser = yy.parser;
+%}
+
 %%
 [0-9]             return 'NUMBER';
 [a-zA-Z]          return 'ALPHA';
@@ -18,21 +23,23 @@
 // language grammar
 %%
 
-// ocaml-list-like recursive structure
-input:
-    %empty
-  | input line
+program
+  : content EOF
   ;
 
-line:
-    EOF
-      { return $1; }
-  | '\n'
+// ocaml-list-like recursive structure
+content
+  : %empty
+  | line content
+  ;
+
+line
+  : '\n'
   | expr '\n'
   ;
 
-expr:
-    NUMBER
+expr
+  : NUMBER
       {$$ = $1;}
   // variable assignment
   | ALPHA '=' NUMBER
