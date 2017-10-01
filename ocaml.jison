@@ -25,6 +25,7 @@
 
 program
   : content EOF
+    {console.dir(yy.parser.vars); return 1;}
   ;
 
 // ocaml-list-like recursive structure
@@ -43,7 +44,20 @@ expr
       {$$ = $1;}
   // variable assignment
   | ALPHA '=' NUMBER
-      {$$ = $3}
+      {
+        yy.parser.setVar($1, $3);
+        $$ = $3;
+      }
   | PRINT ALPHA
       { console.log($2); }
   ;
+
+%%
+
+// utils
+parser.setVar = function(key, val) {
+  if (!this.vars) {
+    this.vars = {};
+  }
+  this.vars[key] = val;
+}
