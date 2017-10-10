@@ -14,6 +14,7 @@
 [0-9]             return 'NUMBER';
 [a-zA-Z]          return 'ALPHA';
 "="               return '=';
+";;"              return ';;';
 <<EOF>>           return 'EOF';
 
 /lex
