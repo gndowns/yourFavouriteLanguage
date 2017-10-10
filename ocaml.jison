@@ -13,6 +13,9 @@
 \s+               // skip whitespace
 [0-9]             return 'NUMBER';
 [a-zA-Z]          return 'ALPHA';
+
+//keywords
+"let"             return 'LET';
 "="               return '=';
 ";;"              return ';;';
 <<EOF>>           return 'EOF';
@@ -36,19 +39,10 @@ expr
   : NUMBER
       {$$ = $1;}
   // variable assignment
-  | ALPHA '=' NUMBER
+  | LET ALPHA '=' NUMBER
       {
-        yy.parser.setVar($1, $3);
-        $$ = $3;
+        $$ = 'var ' + $2 + ' = ' + $4 + ';'
       }
 ;
 
 %%
-
-// utils
-parser.setVar = function(key, val) {
-  if (!this.vars) {
-    this.vars = {};
-  }
-  this.vars[key] = val;
-}
