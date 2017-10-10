@@ -10,12 +10,11 @@
 %}
 
 %%
+\s+               // skip whitespace
 [0-9]             return 'NUMBER';
 [a-zA-Z]          return 'ALPHA';
 "="               return '=';
 "%"           return 'PRINT';
-\n\s*             return '\n';
-[^\S\n]+          // ignore whitespace other than newlines
 <<EOF>>           return 'EOF';
 
 /lex
