@@ -10,9 +10,16 @@ function exec (input) {
 
 // start 'interpreter'
 while (true) {
-  var input = readlineSync.question('# ');
-  console.log(input);
+  var line = '';
+  var promptChar = '# ';
+  // loop until ';;' is entered
+  while (! line.includes(';;')) {
+    var input = readlineSync.question(promptChar);
+    line += ' ' + input;
+    // don't print '# ' for successive lines in single input
+    promptChar = '';
+  }
+  console.log(line.trim().split(';;')[0]);
   
-  // \n
   console.log();
 }
