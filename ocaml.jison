@@ -22,21 +22,15 @@
 // language grammar
 %%
 
-program
+input
   : content EOF
-    {console.dir(yy.parser.vars); return 1;}
-  ;
+;
 
 // ocaml-list-like recursive structure
 content
   : %empty
-  | line content
-  ;
-
-line
-  : '\n'
-  | expr '\n'
-  ;
+  | expr content
+;
 
 expr
   : NUMBER
@@ -49,7 +43,7 @@ expr
       }
   | PRINT ALPHA
       { console.log($2); }
-  ;
+;
 
 %%
 

@@ -72,36 +72,33 @@
   }
 */
 var ocaml = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[2,2],$V1=[1,4],$V2=[1,6],$V3=[1,7],$V4=[1,8],$V5=[5,7,9,10,12];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[2,2],$V1=[1,4],$V2=[1,5],$V3=[1,6],$V4=[5,7,8,10];
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"program":3,"content":4,"EOF":5,"line":6,"\\n":7,"expr":8,"NUMBER":9,"ALPHA":10,"=":11,"PRINT":12,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"EOF",7:"\\n",9:"NUMBER",10:"ALPHA",11:"=",12:"PRINT"},
-productions_: [0,[3,2],[4,0],[4,2],[6,1],[6,1],[8,1],[8,3],[8,2]],
+symbols_: {"error":2,"input":3,"content":4,"EOF":5,"expr":6,"NUMBER":7,"ALPHA":8,"=":9,"PRINT":10,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"EOF",7:"NUMBER",8:"ALPHA",9:"=",10:"PRINT"},
+productions_: [0,[3,2],[4,0],[4,2],[6,1],[6,3],[6,2]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
 var $0 = $$.length - 1;
 switch (yystate) {
-case 1:
-console.dir(yy.parser.vars); return 1;
-break;
-case 6:
+case 4:
 this.$ = $$[$0];
 break;
-case 7:
+case 5:
 
         yy.parser.setVar($$[$0-2], $$[$0]);
         this.$ = $$[$0];
       
 break;
-case 8:
+case 6:
  console.log($$[$0]); 
 break;
 }
 },
-table: [{3:1,4:2,5:$V0,6:3,7:$V1,8:5,9:$V2,10:$V3,12:$V4},{1:[3]},{5:[1,9]},{4:10,5:$V0,6:3,7:$V1,8:5,9:$V2,10:$V3,12:$V4},o($V5,[2,4]),o($V5,[2,5]),o($V5,[2,6]),{11:[1,11]},{10:[1,12]},{1:[2,1]},{5:[2,3]},{9:[1,13]},o($V5,[2,8]),o($V5,[2,7])],
-defaultActions: {9:[2,1],10:[2,3]},
+table: [{3:1,4:2,5:$V0,6:3,7:$V1,8:$V2,10:$V3},{1:[3]},{5:[1,7]},{4:8,5:$V0,6:3,7:$V1,8:$V2,10:$V3},o($V4,[2,4]),{9:[1,9]},{8:[1,10]},{1:[2,1]},{5:[2,3]},{7:[1,11]},o($V4,[2,6]),o($V4,[2,5])],
+defaultActions: {7:[2,1],8:[2,3]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -587,24 +584,22 @@ performAction: function anonymous(yy,yy_,$avoiding_name_collisions,YY_START) {
 
 var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
-case 0:return 9;
+case 0:// skip whitespace
 break;
-case 1:return 10;
+case 1:return 7;
 break;
-case 2:return 11;
+case 2:return 8;
 break;
-case 3:return 12;
+case 3:return 9;
 break;
-case 4:return 7;
+case 4:return ';;';
 break;
-case 5:// ignore whitespace other than newlines
-break;
-case 6:return 5;
+case 5:return 5;
 break;
 }
 },
-rules: [/^(?:[0-9])/,/^(?:[a-zA-Z])/,/^(?:=)/,/^(?:%)/,/^(?:\n\s*)/,/^(?:[^\S\n]+)/,/^(?:$)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6],"inclusive":true}}
+rules: [/^(?:\s+)/,/^(?:[0-9])/,/^(?:[a-zA-Z])/,/^(?:=)/,/^(?:;;)/,/^(?:$)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5],"inclusive":true}}
 });
 return lexer;
 })();
