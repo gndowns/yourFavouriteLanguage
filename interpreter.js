@@ -19,7 +19,11 @@ while (true) {
     // don't print '# ' for successive lines in single input
     promptChar = '';
   }
-  console.log(line.trim().split(';;')[0]);
+
+  ocaml_input = line.trim().split(';;')[0];
+
+  // transpile
+  console.log(exec(ocaml_input));
   
   console.log();
 }
