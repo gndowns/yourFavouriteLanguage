@@ -72,12 +72,12 @@
   }
 */
 var ocaml = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[2,2],$V1=[1,4],$V2=[1,5],$V3=[1,6],$V4=[5,7,8,10];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[2,2],$V1=[1,4],$V2=[1,5],$V3=[5,7,8];
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"input":3,"content":4,"EOF":5,"expr":6,"NUMBER":7,"ALPHA":8,"=":9,"PRINT":10,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"EOF",7:"NUMBER",8:"ALPHA",9:"=",10:"PRINT"},
-productions_: [0,[3,2],[4,0],[4,2],[6,1],[6,3],[6,2]],
+symbols_: {"error":2,"input":3,"content":4,"EOF":5,"expr":6,"NUMBER":7,"ALPHA":8,"=":9,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"EOF",7:"NUMBER",8:"ALPHA",9:"="},
+productions_: [0,[3,2],[4,0],[4,2],[6,1],[6,3]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -92,13 +92,10 @@ case 5:
         this.$ = $$[$0];
       
 break;
-case 6:
- console.log($$[$0]); 
-break;
 }
 },
-table: [{3:1,4:2,5:$V0,6:3,7:$V1,8:$V2,10:$V3},{1:[3]},{5:[1,7]},{4:8,5:$V0,6:3,7:$V1,8:$V2,10:$V3},o($V4,[2,4]),{9:[1,9]},{8:[1,10]},{1:[2,1]},{5:[2,3]},{7:[1,11]},o($V4,[2,6]),o($V4,[2,5])],
-defaultActions: {7:[2,1],8:[2,3]},
+table: [{3:1,4:2,5:$V0,6:3,7:$V1,8:$V2},{1:[3]},{5:[1,6]},{4:7,5:$V0,6:3,7:$V1,8:$V2},o($V3,[2,4]),{9:[1,8]},{1:[2,1]},{5:[2,3]},{7:[1,9]},o($V3,[2,5])],
+defaultActions: {6:[2,1],7:[2,3]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
         this.trace(str);
