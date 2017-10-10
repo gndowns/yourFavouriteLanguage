@@ -574,22 +574,20 @@ var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
 case 0:// skip whitespace
 break;
-case 1:return 7;
+case 1:return 8;
 break;
-case 2:return 9;
+case 2:return 7;
 break;
-case 3:return 8;
+case 3:return 9;
 break;
 case 4:return 10;
 break;
-case 5:return ';;';
-break;
-case 6:return 5;
+case 5:return 5;
 break;
 }
 },
-rules: [/^(?:\s+)/,/^(?:[0-9])/,/^(?:[a-zA-Z])/,/^(?:let\b)/,/^(?:=)/,/^(?:;;)/,/^(?:$)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6],"inclusive":true}}
+rules: [/^(?:\s+)/,/^(?:let\b)/,/^(?:[0-9])/,/^(?:[a-zA-Z])/,/^(?:=)/,/^(?:$)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5],"inclusive":true}}
 });
 return lexer;
 })();
