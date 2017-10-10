@@ -41,8 +41,6 @@ expr
         yy.parser.setVar($1, $3);
         $$ = $3;
       }
-  | PRINT ALPHA
-      { console.log($2); }
 ;
 
 %%
