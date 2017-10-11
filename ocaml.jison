@@ -20,7 +20,7 @@
 "="                     return '=';
 
 \d+(\.\d+)?             return 'NUMBER';
-[a-zA-Z]                return 'ALPHA';
+[a-zA-Z]+               return 'ALPHA';
 <<EOF>>                 return 'EOF';
 
 /lex

@@ -4,17 +4,12 @@ const readlineSync = require('readline-sync');
 // ocaml grammar
 var parser = require('./ocaml').parser;
 
-function exec (input) {
-  return parser.parse(input);
-}
-
-
 // start 'interpreter'
 while (true) {
   var line = '';
   var promptChar = '# ';
 
-  // loop until ';;' is entered
+  // read successive lines until ';;' is entered
   while (! line.includes(';;')) {
     var input = readlineSync.question(promptChar);
     line += ' ' + input;
@@ -37,9 +32,29 @@ while (true) {
   console.log();
 }
 
-function useFile(fp) {
-  var ocaml_input = fs.readFileSync(fp, 'utf8');
-  var js_out = parser.parse(ocaml_input);
+function exec (input) {
+  return parse(input);
+}
 
-  return js_out;
+function useFile(fp) {
+  if (fs.existsSync(fp)) {
+    var ocaml_input = fs.readFileSync(fp, 'utf8');
+    var js_out = parse(ocaml_input);
+
+    return js_out;
+  }
+  // file error
+  else {
+    return "File Path Error!";
+  }
+
+}
+
+function parse(str) {
+  try {
+    return parser.parse(str);
+  }
+  catch (e) {
+    return "Syntax Error!";
+  }
 }
