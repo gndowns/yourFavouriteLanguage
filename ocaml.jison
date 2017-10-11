@@ -26,12 +26,18 @@
 
 input
   : content EOF
+    {
+      var outString = yy.parser.outString;
+      yy.parser.outString = '';
+      return outString
+    }
 ;
 
 // ocaml-list-like recursive structure
 content
   : %empty
   | expr content
+    { yy.parser.append($1); }
 ;
 
 expr
@@ -45,3 +51,8 @@ expr
 ;
 
 %%
+
+// utils
+parser.append = function(str) {
+  this.outString = !this.outString ? str : this.outString + str;
+}
