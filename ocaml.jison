@@ -14,9 +14,13 @@
 //keywords
 "let"                   return 'LET';
 
+// symbols
+"+"                     return '+';
+"-"                     return '-';
+"="                     return '=';
+
 \d+(\.\d+)?             return 'NUMBER';
 [a-zA-Z]                return 'ALPHA';
-"="                     return '=';
 <<EOF>>                 return 'EOF';
 
 /lex
@@ -43,10 +47,12 @@ content
 expr
   : NUMBER
       {$$ = $1;}
+  | NUMBER '+' NUMBER
+      { $$ = $1 + ' + ' + $3; }
   // variable assignment
   | LET ALPHA '=' NUMBER
       {
-        $$ = 'var ' + $2 + ' = ' + $4 + ';'
+        $$ = 'var ' + $2 + ' = ' + $4 + ';';
       }
 ;
 

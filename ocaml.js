@@ -72,12 +72,12 @@
   }
 */
 var ocaml = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[2,2],$V1=[1,4],$V2=[1,5],$V3=[5,7,8];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[2,2],$V1=[1,4],$V2=[1,5],$V3=[5,7,9];
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"input":3,"content":4,"EOF":5,"expr":6,"NUMBER":7,"LET":8,"ALPHA":9,"=":10,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"EOF",7:"NUMBER",8:"LET",9:"ALPHA",10:"="},
-productions_: [0,[3,2],[4,0],[4,2],[6,1],[6,4]],
+symbols_: {"error":2,"input":3,"content":4,"EOF":5,"expr":6,"NUMBER":7,"+":8,"LET":9,"ALPHA":10,"=":11,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"EOF",7:"NUMBER",8:"+",9:"LET",10:"ALPHA",11:"="},
+productions_: [0,[3,2],[4,0],[4,2],[6,1],[6,3],[6,4]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -97,13 +97,16 @@ case 4:
 this.$ = $$[$0];
 break;
 case 5:
+ this.$ = $$[$0-2] + ' + ' + $$[$0]; 
+break;
+case 6:
 
-        this.$ = 'var ' + $$[$0-2] + ' = ' + $$[$0] + ';'
+        this.$ = 'var ' + $$[$0-2] + ' = ' + $$[$0] + ';';
       
 break;
 }
 },
-table: [{3:1,4:2,5:$V0,6:3,7:$V1,8:$V2},{1:[3]},{5:[1,6]},{4:7,5:$V0,6:3,7:$V1,8:$V2},o($V3,[2,4]),{9:[1,8]},{1:[2,1]},{5:[2,3]},{10:[1,9]},{7:[1,10]},o($V3,[2,5])],
+table: [{3:1,4:2,5:$V0,6:3,7:$V1,9:$V2},{1:[3]},{5:[1,6]},{4:7,5:$V0,6:3,7:$V1,9:$V2},o($V3,[2,4],{8:[1,8]}),{10:[1,9]},{1:[2,1]},{5:[2,3]},{7:[1,10]},{11:[1,11]},o($V3,[2,5]),{7:[1,12]},o($V3,[2,6])],
 defaultActions: {6:[2,1],7:[2,3]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
@@ -589,20 +592,24 @@ var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
 case 0:// skip whitespace
 break;
-case 1:return 8;
+case 1:return 9;
 break;
-case 2:return 7;
+case 2:return 8;
 break;
-case 3:return 9;
+case 3:return '-';
 break;
-case 4:return 10;
+case 4:return 11;
 break;
-case 5:return 5;
+case 5:return 7;
+break;
+case 6:return 10;
+break;
+case 7:return 5;
 break;
 }
 },
-rules: [/^(?:\s+)/,/^(?:let\b)/,/^(?:\d+(\.\d+)?)/,/^(?:[a-zA-Z])/,/^(?:=)/,/^(?:$)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5],"inclusive":true}}
+rules: [/^(?:\s+)/,/^(?:let\b)/,/^(?:\+)/,/^(?:-)/,/^(?:=)/,/^(?:\d+(\.\d+)?)/,/^(?:[a-zA-Z])/,/^(?:$)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7],"inclusive":true}}
 });
 return lexer;
 })();
