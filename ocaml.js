@@ -601,7 +601,7 @@ case 5:return 5;
 break;
 }
 },
-rules: [/^(?:\s+)/,/^(?:let\b)/,/^(?:[0-9])/,/^(?:[a-zA-Z])/,/^(?:=)/,/^(?:$)/],
+rules: [/^(?:\s+)/,/^(?:let\b)/,/^(?:\d+(\.\d+)?)/,/^(?:[a-zA-Z])/,/^(?:=)/,/^(?:$)/],
 conditions: {"INITIAL":{"rules":[0,1,2,3,4,5],"inclusive":true}}
 });
 return lexer;

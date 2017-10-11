@@ -10,14 +10,14 @@
 %}
 
 %%
-\s+               // skip whitespace
+\s+                     // skip whitespace
 //keywords
-"let"             return 'LET';
+"let"                   return 'LET';
 
-[0-9]             return 'NUMBER';
-[a-zA-Z]          return 'ALPHA';
-"="               return '=';
-<<EOF>>           return 'EOF';
+\d+(\.\d+)?             return 'NUMBER';
+[a-zA-Z]                return 'ALPHA';
+"="                     return '=';
+<<EOF>>                 return 'EOF';
 
 /lex
 
