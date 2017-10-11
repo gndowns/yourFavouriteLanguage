@@ -47,6 +47,8 @@ content
 expr
   : NUMBER
       {$$ = $1;}
+  | ALPHA
+      {$$ = $1;}
   | NUMBER '+' NUMBER
       { $$ = $1 + ' + ' + $3; }
   // variable assignment
