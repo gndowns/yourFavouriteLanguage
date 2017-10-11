@@ -50,7 +50,7 @@ expr
   | NUMBER '+' NUMBER
       { $$ = $1 + ' + ' + $3; }
   // variable assignment
-  | LET ALPHA '=' NUMBER
+  | LET ALPHA '=' expr
       {
         $$ = 'var ' + $2 + ' = ' + $4 + ';';
       }
