@@ -10,54 +10,57 @@
 %}
 
 %%
-[0-9]             return 'NUMBER';
-[a-zA-Z]          return 'ALPHA';
-"="               return '=';
-"%"           return 'PRINT';
-\n\s*             return '\n';
-[^\S\n]+          // ignore whitespace other than newlines
-<<EOF>>           return 'EOF';
+\s+                     // skip whitespace
+//keywords
+"let"                   return 'LET';
+
+// symbols
+"+"                     return '+';
+"-"                     return '-';
+"="                     return '=';
+
+\d+(\.\d+)?             return 'NUMBER';
+[a-zA-Z]                return 'ALPHA';
+<<EOF>>                 return 'EOF';
 
 /lex
 
 // language grammar
 %%
 
-program
+input
   : content EOF
-    {console.dir(yy.parser.vars); return 1;}
-  ;
+    {
+      var outString = yy.parser.outString;
+      yy.parser.outString = '';
+      return outString
+    }
+;
 
 // ocaml-list-like recursive structure
 content
   : %empty
-  | line content
-  ;
-
-line
-  : '\n'
-  | expr '\n'
-  ;
+  | expr content
+    { yy.parser.append($1); }
+;
 
 expr
   : NUMBER
       {$$ = $1;}
+  | ALPHA
+      {$$ = $1;}
+  | NUMBER '+' NUMBER
+      { $$ = $1 + ' + ' + $3; }
   // variable assignment
-  | ALPHA '=' NUMBER
+  | LET ALPHA '=' expr
       {
-        yy.parser.setVar($1, $3);
-        $$ = $3;
+        $$ = 'var ' + $2 + ' = ' + $4 + ';';
       }
-  | PRINT ALPHA
-      { console.log($2); }
-  ;
+;
 
 %%
 
 // utils
-parser.setVar = function(key, val) {
-  if (!this.vars) {
-    this.vars = {};
-  }
-  this.vars[key] = val;
+parser.append = function(str) {
+  this.outString = !this.outString ? str : this.outString + str;
 }
