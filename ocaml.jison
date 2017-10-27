@@ -80,7 +80,7 @@ expression
   // function definition
   | LET ALPHA argument_list '=' expression
       { $$ = 'var ' + $2 + ' = function(' + $3 + ') = {\n'
-        + '  ' + $5 + ';\n' + '};' ;}
+        + '  ' + $5 + ';\n' + '}' ;}
 ;
 
 argument_list
