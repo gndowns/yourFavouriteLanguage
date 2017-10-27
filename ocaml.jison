@@ -1,4 +1,5 @@
-/* Parses ocaml variable declarations */
+// parses ocaml to JS
+
 
 // lexical grammar
 
