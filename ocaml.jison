@@ -66,6 +66,7 @@ expression
 argument_list
   : ALPHA
   | ALPHA argument_list
+      { $$ = $1 + ', ' +  $2; }
 ;
 
 %%
