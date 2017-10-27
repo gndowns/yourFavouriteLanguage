@@ -66,21 +66,20 @@ expression
 
   // mathematical expressions
   | expression '+' expression
-      { $$ = $1 + ' + ' + $3; }
+      { $$ = math_expr_str($1, $2, $3); }
   | expression '-' expression
-      { $$ = $1 + ' - ' + $3; }
+      { $$ = math_expr_str($1, $2, $3); }
   | expression '*' expression
-      { $$ = $1 + ' * ' + $3; }
+      { $$ = math_expr_str($1, $2, $3); }
   | expression '/' expression
-      { $$ = $1 + ' / ' + $3; }
+      { $$ = math_expr_str($1, $2, $3); }
 
   // variable assignment
   | LET ALPHA '=' expression
-      { $$ = 'var ' + $2 + ' = ' + $4 + ';' ;}
+      { $$ = var_assignment_str($2, $4); }
   // function definition
   | LET ALPHA argument_list '=' expression
-      { $$ = 'var ' + $2 + ' = function(' + $3 + ') = {\n'
-        + '  return ' + $5 + ';\n' + '}' ;}
+      { $$ = function_def_str($2, $3, $5); }
 ;
 
 argument_list
@@ -92,6 +91,22 @@ argument_list
 %%
 
 // utils
+math_expr_str = function(e1, operator, e2) {
+  return e1 + ' ' + operator + ' ' + e2;
+}
+
+var_assignment_str = function(identifier, val){
+  return 'var ' + identifier + ' = ' + val + ';';
+}
+
+function_def_str = function(identifier, arg_list, val) {
+  return 'var ' + identifier + ' = ' +
+    'function(' + arg_list + ') {\n'
+      + '  return ' + val + ';\n' +
+    '}'
+  ;
+}
+
 parser.append = function(str) {
   this.outString = !this.outString ? str : this.outString + str;
 }
