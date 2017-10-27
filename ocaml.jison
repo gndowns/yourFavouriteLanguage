@@ -1,33 +1,43 @@
-/* Parses ocaml variable declarations */
+// parses ocaml to JS
+
 
 // lexical grammar
 
 %lex
 
-// available in grammar rules
+// make parser available in grammar rules
 %{
   var parser = yy.parser;
 %}
 
 %%
 \s+                     // skip whitespace
-//keywords
+
+// keywords
 "let"                   return 'LET';
 
-// symbols
+// operators
 "+"                     return '+';
 "-"                     return '-';
 "="                     return '=';
 
+// identifiers and literals
 \d+(\.\d+)?             return 'NUMBER';
 [a-zA-Z]+               return 'ALPHA';
+
+// end of input
 <<EOF>>                 return 'EOF';
 
 /lex
 
+// operator precedence
+%right '='
+%left '+'
+
 // language grammar
 %%
 
+// represents the entire ocaml 'program' given
 input
   : content EOF
     {
@@ -37,25 +47,33 @@ input
     }
 ;
 
-// ocaml-list-like recursive structure
+// the actual text of the ocaml input
 content
   : %empty
-  | expr content
+  | expression content
     { yy.parser.append($1); }
 ;
 
-expr
+expression
   : NUMBER
       {$$ = $1;}
   | ALPHA
       {$$ = $1;}
-  | NUMBER '+' NUMBER
+  | expression '+' expression
       { $$ = $1 + ' + ' + $3; }
   // variable assignment
-  | LET ALPHA '=' expr
-      {
-        $$ = 'var ' + $2 + ' = ' + $4 + ';';
-      }
+  | LET ALPHA '=' expression
+      { $$ = 'var ' + $2 + ' = ' + $4 + ';' ;}
+  // function definition
+  | LET ALPHA argument_list '=' expression
+      { $$ = 'var ' + $2 + ' = function(' + $3 + ') = {\n'
+        + '  ' + $5 + ';\n' + '};' ;}
+;
+
+argument_list
+  : ALPHA
+  | ALPHA argument_list
+      { $$ = $1 + ', ' +  $2; }
 ;
 
 %%
