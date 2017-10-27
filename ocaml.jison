@@ -17,9 +17,11 @@
 "let"                   return 'LET';
 
 // operators
+"="                     return '=';
 "+"                     return '+';
 "-"                     return '-';
-"="                     return '=';
+"*"                     return '*';
+"/"                     return '/';
 
 // identifiers and literals
 \d+(\.\d+)?             return 'NUMBER';
@@ -32,7 +34,7 @@
 
 // operator precedence
 %right '='
-%left '+'
+%left '+' '-' '*' '/'
 
 // language grammar
 %%
@@ -59,8 +61,17 @@ expression
       {$$ = $1;}
   | ALPHA
       {$$ = $1;}
+
+  // mathematical expressions
   | expression '+' expression
       { $$ = $1 + ' + ' + $3; }
+  | expression '-' expression
+      { $$ = $1 + ' - ' + $3; }
+  | expression '*' expression
+      { $$ = $1 + ' * ' + $3; }
+  | expression '/' expression
+      { $$ = $1 + ' / ' + $3; }
+
   // variable assignment
   | LET ALPHA '=' expression
       { $$ = 'var ' + $2 + ' = ' + $4 + ';' ;}
