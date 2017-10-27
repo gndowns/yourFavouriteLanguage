@@ -57,6 +57,15 @@ expression
   // variable assignment
   | LET ALPHA '=' expression
       { $$ = 'var ' + $2 + ' = ' + $4 + ';' ;}
+  // function definition
+  | LET ALPHA argument_list '=' expression
+      { $$ = 'var ' + $2 + ' = function(' + $3 + ') = {\n'
+        + '  ' + $5 + ';\n' + '};' ;}
+;
+
+argument_list
+  : ALPHA
+  | ALPHA argument_list
 ;
 
 %%
