@@ -5,33 +5,39 @@
 
 %lex
 
-// available in grammar rules
+// make parser available in grammar rules
 %{
   var parser = yy.parser;
 %}
 
 %%
 \s+                     // skip whitespace
-//keywords
+
+// keywords
 "let"                   return 'LET';
 
-// symbols
+// operators
 "+"                     return '+';
 "-"                     return '-';
 "="                     return '=';
 
+// identifiers and literals
 \d+(\.\d+)?             return 'NUMBER';
 [a-zA-Z]+               return 'ALPHA';
+
+// end of input
 <<EOF>>                 return 'EOF';
 
 /lex
 
+// operator precedence
 %right '='
 %left '+'
 
 // language grammar
 %%
 
+// represents the entire ocaml 'program' given
 input
   : content EOF
     {
@@ -41,7 +47,7 @@ input
     }
 ;
 
-// ocaml-list-like recursive structure
+// the actual text of the ocaml input
 content
   : %empty
   | expression content
