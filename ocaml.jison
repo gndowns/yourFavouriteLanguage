@@ -25,6 +25,9 @@
 
 /lex
 
+%right '='
+%left '+'
+
 // language grammar
 %%
 
@@ -40,22 +43,20 @@ input
 // ocaml-list-like recursive structure
 content
   : %empty
-  | expr content
+  | expression content
     { yy.parser.append($1); }
 ;
 
-expr
+expression
   : NUMBER
       {$$ = $1;}
   | ALPHA
       {$$ = $1;}
-  | NUMBER '+' NUMBER
+  | expression '+' expression
       { $$ = $1 + ' + ' + $3; }
   // variable assignment
-  | LET ALPHA '=' expr
-      {
-        $$ = 'var ' + $2 + ' = ' + $4 + ';';
-      }
+  | LET ALPHA '=' expression
+      { $$ = 'var ' + $2 + ' = ' + $4 + ';' ;}
 ;
 
 %%

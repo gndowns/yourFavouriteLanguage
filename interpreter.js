@@ -55,6 +55,7 @@ function parse(str) {
     return parser.parse(str);
   }
   catch (e) {
+    // console.log(e);
     return "Syntax Error!";
   }
 }
