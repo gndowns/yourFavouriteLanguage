@@ -28,7 +28,8 @@
 
 // identifiers and literals
 \d+(\.\d+)?             return 'NUMBER';
-[a-zA-Z]+               return 'ALPHA';
+[a-z][a-zA-Z1-9']*      return 'IDENTIFIER';
+
 
 // end of input
 <<EOF>>                 return 'EOF';
@@ -64,8 +65,8 @@ content
 expression
   : NUMBER
       {$$ = $1;}
-  | ALPHA
-      {$$ = $1;}
+  | IDENTIFIER
+      { $$ = $1;}
 
   // mathematical expressions
   | expression '+' expression
@@ -78,16 +79,16 @@ expression
       { $$ = math_expr_str($1, $2, $3); }
 
   // variable assignment
-  | LET ALPHA '=' expression
+  | LET IDENTIFIER '=' expression
       { $$ = var_assignment_str($2, $4); }
   // function definition
-  | LET ALPHA argument_list '=' expression
+  | LET IDENTIFIER argument_list '=' expression
       { $$ = function_def_str($2, $3, $5); }
 ;
 
 argument_list
-  : ALPHA
-  | ALPHA argument_list
+  : IDENTIFIER
+  | IDENTIFIER argument_list
       { $$ = $1 + ', ' +  $2; }
 ;
 
