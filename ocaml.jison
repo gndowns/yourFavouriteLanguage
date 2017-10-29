@@ -23,6 +23,9 @@
 "*"                     return '*';
 "/"                     return '/';
 
+"["                     return '[';
+"]"                     return ']';
+
 // identifiers and literals
 \d+(\.\d+)?             return 'NUMBER';
 [a-zA-Z]+               return 'ALPHA';
