@@ -25,6 +25,7 @@
 
 "["                     return '[';
 "]"                     return ']';
+";"                     return ';';
 
 // identifiers and literals
 \d+(\.\d+)?             return 'NUMBER';
@@ -78,12 +79,25 @@ expression
   | expression '/' expression
       { $$ = math_expr_str($1, $2, $3); }
 
+  // list
+  | '[' list_elements ']'
+      { $$ = '[' + $2 + ']'; }
+
   // variable assignment
   | LET IDENTIFIER '=' expression
       { $$ = var_assignment_str($2, $4); }
   // function definition
   | LET IDENTIFIER argument_list '=' expression
       { $$ = function_def_str($2, $3, $5); }
+;
+
+list_elements
+  : %empty
+      { $$ = ""; }
+  | expression
+      { $$ = $1; }
+  | expression ';' list_elements
+      { $$ = $1 + ", " + $3; }
 ;
 
 argument_list
