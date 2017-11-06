@@ -66,10 +66,8 @@ content
 ;
 
 expression
-  : NUMBER
+  : primitive_type
       {$$ = $1;}
-  | IDENTIFIER
-      { $$ = $1;}
 
   // mathematical expressions
   | expression '+' expression
@@ -85,12 +83,29 @@ expression
   | '[' list_elements ']'
       { $$ = '[' + $2 + ']'; }
 
+  // list cons
+  | primitive_type "::" LIST
+      { $$ = '[' + $1 + ']' + ".concat(" + $3 + ");"; }
+
   // variable assignment
   | LET IDENTIFIER '=' expression
       { $$ = var_assignment_str($2, $4); }
   // function definition
   | LET IDENTIFIER argument_list '=' expression
       { $$ = function_def_str($2, $3, $5); }
+;
+
+// integers, floats, and identifiers (potentially) rep'ing them
+primitive_type
+  : IDENTIFIER
+  | NUMBER
+;
+
+// a list literal or an identifier (potentially) rep'ing a list
+LIST
+  : '[' list_elements ']'
+    { $$ = '[' + $2 + ']'; }
+  | IDENTIFIER
 ;
 
 list_elements
