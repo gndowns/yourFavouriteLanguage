@@ -103,6 +103,10 @@ LIST
   : '[' list_elements ']'
       { $$ = '[' + $2 + ']'; }
 
+  // list cons chain terminating in identifier
+  | primitive_type "::" IDENTIFIER
+      { $$ = '[' + $1 + ']' + ".concat(" + $3 + ")"; }
+
   // list cons
   | primitive_type "::" LIST
       { $$ = '[' + $1 + ']' + ".concat(" + $3 + ")"; }
