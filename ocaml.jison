@@ -70,7 +70,7 @@ expression
       {$$ = $1; }
 
   // list
-  | LIST
+  | list
       { $$ = $1; }
 
   // mathematical expressions
@@ -98,7 +98,7 @@ primitive_type
 ;
 
 // a list literal (including cons)
-LIST
+list
   // list literal
   : '[' list_elements ']'
       { $$ = '[' + $2 + ']'; }
