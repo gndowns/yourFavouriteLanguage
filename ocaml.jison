@@ -67,7 +67,11 @@ content
 
 expression
   : primitive_type
-      {$$ = $1;}
+      {$$ = $1; }
+
+  // list
+  | LIST
+      { $$ = $1; }
 
   // mathematical expressions
   | expression '+' expression
@@ -78,14 +82,6 @@ expression
       { $$ = math_expr_str($1, $2, $3); }
   | expression '/' expression
       { $$ = math_expr_str($1, $2, $3); }
-
-  // list
-  | '[' list_elements ']'
-      { $$ = '[' + $2 + ']'; }
-
-  // list cons
-  | primitive_type "::" LIST
-      { $$ = '[' + $1 + ']' + ".concat(" + $3 + ");"; }
 
   // variable assignment
   | LET IDENTIFIER '=' expression
@@ -101,11 +97,15 @@ primitive_type
   | NUMBER
 ;
 
-// a list literal or an identifier (potentially) rep'ing a list
+// a list literal (including cons)
 LIST
+  // list literal
   : '[' list_elements ']'
-    { $$ = '[' + $2 + ']'; }
-  | IDENTIFIER
+      { $$ = '[' + $2 + ']'; }
+
+  // list cons
+  | primitive_type "::" LIST
+      { $$ = '[' + $1 + ']' + ".concat(" + $3 + ")"; }
 ;
 
 list_elements
