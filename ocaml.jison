@@ -1,22 +1,22 @@
-// parses ocaml to JS
+/* parses ocaml to JS */
 
 
-// lexical grammar
+/* lexical grammar */
 
 %lex
 
-// make parser available in grammar rules
+/* make parser available in grammar rules */
 %{
   var parser = yy.parser;
 %}
 
 %%
-\s+                     // skip whitespace
+\s+                     /* skip whitespace */
 
-// keywords
+/* keywords */
 "let"                   return 'LET';
 
-// operators
+/* operators */
 "="                     return '=';
 "+"                     return '+';
 "-"                     return '-';
@@ -29,24 +29,28 @@
 "]"                     return ']';
 ";"                     return ';';
 
-// identifiers and literals
+/* identifiers and literals */
 \d+(\.\d+)?             return 'NUMBER';
 [a-z][a-zA-Z1-9']*      return 'IDENTIFIER';
 
 
-// end of input
+/* end of input */
 <<EOF>>                 return 'EOF';
 
 /lex
 
-// operator precedence
+/* operator precedence */
 %right '='
-%left '+' '-' '*' '/'
 
-%right '::'
+%left '+' '-'
+%left '*' '/'
+
+/* I'm unsure if '@' is left or right associative,
+but its precedence is definitely below '::' */
 %left '@'
+%right '::'
 
-// language grammar
+/* language grammar */
 %%
 
 // represents the entire ocaml 'program' given
