@@ -15,6 +15,7 @@
 
 /* keywords */
 "let"                   return 'LET';
+"in"                    return 'IN';
 
 /* operators */
 "="                     return '=';
