@@ -5,3 +5,4 @@
 - Strings, bools, any other primitive types
 - Recursive functions using 'in'
 - multi-line input
+- constant functions vs variables
