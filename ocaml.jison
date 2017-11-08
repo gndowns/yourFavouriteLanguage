@@ -108,8 +108,9 @@ list
       { $$ = '[' + $1 + ']' + ".concat(" + $3 + ")"; }
 
   // list cons
-  | primitive_type "::" LIST
+  | primitive_type "::" list
       { $$ = '[' + $1 + ']' + ".concat(" + $3 + ")"; }
+
 ;
 
 list_elements
