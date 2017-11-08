@@ -22,10 +22,17 @@
 "-"                     return '-';
 "*"                     return '*';
 "/"                     return '/';
+"::"                    return '::';
+"@"                     return '@';
+
+"["                     return '[';
+"]"                     return ']';
+";"                     return ';';
 
 // identifiers and literals
 \d+(\.\d+)?             return 'NUMBER';
-[a-zA-Z]+               return 'ALPHA';
+[a-z][a-zA-Z1-9']*      return 'IDENTIFIER';
+
 
 // end of input
 <<EOF>>                 return 'EOF';
@@ -35,6 +42,9 @@
 // operator precedence
 %right '='
 %left '+' '-' '*' '/'
+
+%right '::'
+%left '@'
 
 // language grammar
 %%
@@ -59,10 +69,12 @@ content
 ;
 
 expression
-  : NUMBER
-      {$$ = $1;}
-  | ALPHA
-      {$$ = $1;}
+  : primitive_type
+      {$$ = $1; }
+
+  // list
+  | list
+      { $$ = $1; }
 
   // mathematical expressions
   | expression '+' expression
@@ -75,16 +87,51 @@ expression
       { $$ = math_expr_str($1, $2, $3); }
 
   // variable assignment
-  | LET ALPHA '=' expression
+  | LET IDENTIFIER '=' expression
       { $$ = var_assignment_str($2, $4); }
   // function definition
-  | LET ALPHA argument_list '=' expression
+  | LET IDENTIFIER argument_list '=' expression
       { $$ = function_def_str($2, $3, $5); }
 ;
 
+// integers, floats, and identifiers (potentially) rep'ing them
+primitive_type
+  : IDENTIFIER
+  | NUMBER
+;
+
+// a list literal (including cons)
+list
+  // list literal
+  : '[' list_elements ']'
+      { $$ = '[' + $2 + ']'; }
+
+  // list cons chain terminating in identifier
+  | primitive_type "::" IDENTIFIER
+      { $$ = '[' + $1 + ']' + ".concat(" + $3 + ")"; }
+
+  // list cons
+  | primitive_type "::" list
+      { $$ = '[' + $1 + ']' + ".concat(" + $3 + ")"; }
+
+  // list append
+  | list '@' list
+      { $$ = $1 + ".concat(" + $3 + ")"; }
+
+;
+
+list_elements
+  : %empty
+      { $$ = ""; }
+  | expression
+      { $$ = $1; }
+  | expression ';' list_elements
+      { $$ = $1 + ", " + $3; }
+;
+
 argument_list
-  : ALPHA
-  | ALPHA argument_list
+  : IDENTIFIER
+  | IDENTIFIER argument_list
       { $$ = $1 + ', ' +  $2; }
 ;
 
