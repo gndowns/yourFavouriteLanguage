@@ -43,6 +43,9 @@
 %right '='
 %left '+' '-' '*' '/'
 
+%right '::'
+%left '@'
+
 // language grammar
 %%
 
@@ -110,6 +113,10 @@ list
   // list cons
   | primitive_type "::" list
       { $$ = '[' + $1 + ']' + ".concat(" + $3 + ")"; }
+
+  // list append
+  | list '@' list
+      { $$ = $1 + ".concat(" + $3 + ")"; }
 
 ;
 
