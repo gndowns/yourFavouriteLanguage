@@ -15,6 +15,8 @@
 
 /* keywords */
 "let"                   return 'LET';
+"in"                    return 'IN';
+"rec"                   return 'REC';
 
 /* operators */
 "="                     return '=';
@@ -96,6 +98,9 @@ expression
   // function definition
   | LET IDENTIFIER argument_list '=' expression
       { $$ = function_def_str($2, $3, $5); }
+  // recursive function definition
+  | LET REC IDENTIFIER argument_list '=' expression
+      { $$ = function_def_str($3, $4, $6); }
 ;
 
 // integers, floats, and identifiers (potentially) rep'ing them
