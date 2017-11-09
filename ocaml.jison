@@ -60,12 +60,11 @@ input
   : content EOF
     {
       var outString = yy.parser.outString;
+      // reset for next input
       yy.parser.outString = '';
       return outString
     }
 ;
-
-// TODO: multiline expressions
 
 // the actual text of the ocaml input
 content
