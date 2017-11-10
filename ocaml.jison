@@ -151,15 +151,15 @@ argument_list
 %%
 
 // utils
-math_expr_str = function(e1, operator, e2) {
+var math_expr_str = function(e1, operator, e2) {
   return e1 + ' ' + operator + ' ' + e2;
 }
 
-var_assignment_str = function(identifier, val){
+var var_assignment_str = function(identifier, val){
   return 'var ' + identifier + ' = ' + val + ';';
 }
 
-function_def_str = function(identifier, arg_list, val) {
+var function_def_str = function(identifier, arg_list, val) {
   return 'var ' + identifier + ' = ' +
     'function(' + arg_list + ') {\n'
       + '  return ' + val + ';\n' +
