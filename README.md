@@ -1,4 +1,5 @@
 # ocaml-to-js
+A humble ocaml-to-javascript transpiler I made to study for my [Functional Programming Course](https://www.mcgill.ca/study/2016-2017/courses/comp-302) at McGill
 
 # USAGE
 
