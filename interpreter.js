@@ -26,14 +26,8 @@ while (true) {
   }
   else {
     // else transpile
-    console.log(exec(ocaml_input));
+    console.log(parse(ocaml_input));
   }
-  
-  console.log();
-}
-
-function exec (input) {
-  return parse(input);
 }
 
 function useFile(fp) {
@@ -55,7 +49,7 @@ function parse(str) {
     return parser.parse(str);
   }
   catch (e) {
-    // console.log(e);
+    console.log(e);
     return "Syntax Error!";
   }
 }
