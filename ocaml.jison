@@ -55,8 +55,9 @@ but its precedence is definitely below '::' */
 /* language grammar */
 %%
 
-// represents the entire ocaml 'program' given
+// represents the entire ocaml 'program' given to transpile
 input
+  // ocaml source code, terminated with EOF
   : content EOF
     {
       var outString = yy.parser.outString;
@@ -68,9 +69,13 @@ input
 
 // the actual text of the ocaml input
 content
+  // possible empty input, return empty string
   : %empty
+    { yy.parser.prepend(""); }
+  // recursive list of expressions
   | expression content
-    { yy.parser.append($1); }
+    // separate expressions with newline
+    { yy.parser.prepend($1 + '\n'); }
 ;
 
 expression
@@ -162,6 +167,6 @@ function_def_str = function(identifier, arg_list, val) {
   ;
 }
 
-parser.append = function(str) {
-  this.outString = !this.outString ? str : this.outString + str;
+parser.prepend = function(str) {
+  this.outString = !this.outString ? str : str + this.outString;
 }

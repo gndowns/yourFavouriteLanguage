@@ -28,8 +28,6 @@ while (true) {
     // else transpile
     console.log(parse(ocaml_input));
   }
-  
-  console.log();
 }
 
 function useFile(fp) {
