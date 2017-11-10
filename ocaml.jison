@@ -79,22 +79,9 @@ content
 ;
 
 expression
-  : primitive_type
-      {$$ = $1; }
-
-  // list
-  | list
+  // variables, lists, and mathematical expressions
+  : simple_expression
       { $$ = $1; }
-
-  // mathematical expressions
-  | expression '+' expression
-      { $$ = math_expr_str($1, $2, $3); }
-  | expression '-' expression
-      { $$ = math_expr_str($1, $2, $3); }
-  | expression '*' expression
-      { $$ = math_expr_str($1, $2, $3); }
-  | expression '/' expression
-      { $$ = math_expr_str($1, $2, $3); }
 
   // variable assignment
   | LET IDENTIFIER '=' expression
@@ -107,13 +94,32 @@ expression
       { $$ = function_def_str($3, $4, $6); }
 ;
 
+simple_expression
+  : primitive_type
+      {$$ = $1; }
+
+  // list
+  | list
+      { $$ = $1; }
+
+  // mathematical expressions
+  | simple_expression '+' simple_expression
+      { $$ = math_expr_str($1, $2, $3); }
+  | simple_expression '-' simple_expression
+      { $$ = math_expr_str($1, $2, $3); }
+  | simple_expression '*' simple_expression
+      { $$ = math_expr_str($1, $2, $3); }
+  | simple_expression '/' simple_expression
+      { $$ = math_expr_str($1, $2, $3); }
+
+;
 // integers, floats, and identifiers (potentially) rep'ing them
 primitive_type
   : IDENTIFIER
   | NUMBER
 ;
 
-// a list literal (including cons)
+// a list literal (including cons and append)
 list
   // list literal
   : '[' list_elements ']'
