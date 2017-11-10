@@ -111,8 +111,14 @@ simple_expression
       { $$ = math_expr_str($1, $2, $3); }
   | simple_expression '/' simple_expression
       { $$ = math_expr_str($1, $2, $3); }
-
 ;
+
+simple_expression_list
+  : simple_expression
+  | simple_expression simple_expression_list
+      { $$ = $1; }
+;
+
 // integers, floats, and identifiers (potentially) rep'ing them
 primitive_type
   : IDENTIFIER
