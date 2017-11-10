@@ -23,3 +23,9 @@ node interpreter.js
 ```
 
 Type any valid ocaml expression, ending with `;;` and the 'interpreter' will print the javascript equivalent.
+
+# License
+
+Copyright 2017 Gabriel Downs \
+This project is free software, licensed under the GNU GPL. \
+Please see included `LICENSE` file, or [http://www.gnu.org/licenses/](http://www.gnu.org/licenses/) for more details.
