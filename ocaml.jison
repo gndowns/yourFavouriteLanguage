@@ -67,10 +67,11 @@ input
   // ocaml source code, terminated with EOF
   : content EOF
     {
-      var outString = yy.parser.outString;
-      // reset for next input
-      yy.parser.outString = '';
-      return outString
+      return $1;
+      /* var outString = yy.parser.outString; */
+      /* // reset for next input */
+      /* yy.parser.outString = ''; */
+      /* return outString */
     }
 ;
 
@@ -78,15 +79,19 @@ input
 content
   // possible empty input, return empty string
   : %empty
+    { $$ = ""; }
   // recursive list of successive definitions (functions,
   // vars, types, etc) representing an entire program
   | definitions
   // single expression followed by EOF
   // (primarily for use in interpreter mode)
   | expression
+    /* { yy.parser.prepend($1); } */
 ;
 
 expression
+  // the simplest expression, an identifier or constant literal
+  : primitive_type
   // variables, lists, and mathematical expressions
   /* : simple_expression */
       /* { $$ = $1; } */
@@ -95,7 +100,7 @@ expression
   // variable assignments, function definitions and calls
 
   // variable assignment
-  : LET IDENTIFIER '=' simple_expression
+  | LET IDENTIFIER '=' simple_expression
       { $$ = var_assignment_str($2, $4); }
   // function definition
   | LET IDENTIFIER argument_list '=' simple_expression
@@ -105,7 +110,7 @@ expression
       { $$ = function_def_str($3, $4, $6); }
 
   // function call with arguments
-  | IDENTIFIER simple_expression_list %prec FUNCTION
+  /* | IDENTIFIER simple_expression_list %prec FUNCTION */
 
 ;
 
@@ -134,10 +139,13 @@ simple_expression_list
       { $$ = $1; }
 ;
 
-// integers, floats, and identifiers (potentially) rep'ing them
+// all primitive data types as well as variable names
 primitive_type
   : IDENTIFIER
-  | NUMBER
+  | FLOAT
+  | INTEGER
+  | CHAR
+  | STRING
 ;
 
 // a list literal (including cons and append)
