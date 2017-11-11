@@ -28,6 +28,10 @@
 
 /* operators */
 "="                     return '=';
+"+."                    return '+.';
+"-."                    return '-.';
+"*."                    return '*.';
+"/."                    return '/.';
 "+"                     return '+';
 "-"                     return '-';
 "*"                     return '*';
@@ -48,8 +52,8 @@
 /* operator precedence */
 %right '='
 
-%left '+' '-'
-%left '*' '/'
+%left '+' '-' '+.' '-.'
+%left '*' '/' '*.' '/.'
 
 /* I'm unsure if '@' is left or right associative,
 but its precedence is definitely below '::' */
@@ -101,6 +105,14 @@ expression
   | expression '*' expression
       { $$ = math_expr_str($1, $2, $3); }
   | expression '/' expression
+      { $$ = math_expr_str($1, $2, $3); }
+  | expression "+." expression
+      { $$ = math_expr_str($1, $2, $3); }
+  | expression "-." expression
+      { $$ = math_expr_str($1, $2, $3); }
+  | expression "*." expression
+      { $$ = math_expr_str($1, $2, $3); }
+  | expression "/." expression
       { $$ = math_expr_str($1, $2, $3); }
 
   // variables, lists, and mathematical expressions
