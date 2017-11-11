@@ -81,16 +81,12 @@ input
 
 // the actual text of the ocaml input
 content
-  // possible empty input, return empty string
-  : %empty
-    { $$ = ""; }
   // recursive list of successive definitions (functions,
   // vars, types, etc) representing an entire program
-  | definitions
+  : definitions
   // single expression followed by EOF
   // (primarily for use in interpreter mode)
   | expression
-    /* { yy.parser.prepend($1); } */
 ;
 
 expression
@@ -134,6 +130,16 @@ expression
 
   // function call with arguments
   /* | IDENTIFIER simple_expression_list %prec FUNCTION */
+
+;
+
+// recurisve list of definitions
+definitions
+  // possible empty input, return empty string
+  : %empty
+      { $$ = ""; }
+  | definition definitions
+      { $$ = $1 + '\n' + $2; }
 
 ;
 
