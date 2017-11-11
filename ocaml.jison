@@ -10,6 +10,7 @@
   var parser = yy.parser;
 %}
 
+
 %%
 \s+                     /* skip whitespace */
 
@@ -17,6 +18,11 @@
 "let"                   return 'LET';
 "in"                    return 'IN';
 "rec"                   return 'REC';
+
+/* identifiers and literals */
+\d+(\.)(\d+)?           return 'FLOAT';
+\d+                     return 'INTEGER';
+[a-z][a-zA-Z0-9_']*     return 'IDENTIFIER';
 
 /* operators */
 "="                     return '=';
@@ -30,10 +36,6 @@
 "["                     return '[';
 "]"                     return ']';
 ";"                     return ';';
-
-/* identifiers and literals */
-\d+(\.\d+)?             return 'NUMBER';
-[a-z][a-zA-Z0-9_']*     return 'IDENTIFIER';
 
 
 /* end of input */
