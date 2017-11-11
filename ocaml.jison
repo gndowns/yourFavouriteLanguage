@@ -78,11 +78,12 @@ input
 content
   // possible empty input, return empty string
   : %empty
-    { yy.parser.prepend(""); }
-  // recursive list of expressions
+  // recursive list of successive definitions (functions,
+  // vars, types, etc) representing an entire program
+  | definitions
+  // single expression followed by EOF
+  // (primarily for use in interpreter mode)
   | expression
-    // separate expressions with newline
-    { yy.parser.prepend($1 + '\n'); }
 ;
 
 expression
