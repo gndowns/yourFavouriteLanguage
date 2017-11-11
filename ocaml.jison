@@ -115,22 +115,28 @@ expression
   /* : simple_expression */
       /* { $$ = $1; } */
 
-  // non-simple expressions, listed below, include
-  // variable assignments, function definitions and calls
-
-  // variable assignment
-  | LET IDENTIFIER '=' simple_expression
-      { $$ = var_assignment_str($2, $4); }
-  // function definition
-  | LET IDENTIFIER argument_list '=' simple_expression
-      { $$ = function_def_str($2, $3, $5); }
-  // recursive function definition
-  | LET REC IDENTIFIER argument_list '=' simple_expression
-      { $$ = function_def_str($3, $4, $6); }
-
   // function call with arguments
   /* | IDENTIFIER simple_expression_list %prec FUNCTION */
 
+;
+
+// the meat and potatoes of a real ocaml program
+definition
+  : LET let_binding
+      { $$ = $2; }
+;
+
+// used for variable and function assignment
+let_binding
+  // var assignment
+  : IDENTIFIER '=' expression
+      { $$ = var_assignment_str($1, $3); }
+  // function assignment (ocaml functions always
+  // have at least one arg)
+  | IDENTIFIER parameters '=' expression
+      { $$ = function_def_str($1, $2, $4); }
+  | REC IDENTIFIER parameters '=' expression
+      { $$ = function_def_str($2, $3, $5); }
 ;
 
 // recurisve list of definitions
@@ -140,7 +146,6 @@ definitions
       { $$ = ""; }
   | definition definitions
       { $$ = $1 + '\n' + $2; }
-
 ;
 
 simple_expression
@@ -206,9 +211,10 @@ list_elements
       { $$ = $1 + ", " + $3; }
 ;
 
-argument_list
+// list of parameter identifiers in function definition
+parameters
   : IDENTIFIER
-  | IDENTIFIER argument_list
+  | IDENTIFIER parameters
       { $$ = $1 + ', ' +  $2; }
 ;
 
