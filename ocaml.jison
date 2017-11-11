@@ -22,6 +22,8 @@
 /* identifiers and literals */
 \d+(\.)(\d+)?           return 'FLOAT';
 \d+                     return 'INTEGER';
+\'[a-zA-Z]\'               return 'CHAR';
+\"[a-zA-Z]+\"              return 'STRING';
 [a-z][a-zA-Z0-9_']*     return 'IDENTIFIER';
 
 /* operators */
