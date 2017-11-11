@@ -33,7 +33,7 @@
 
 /* identifiers and literals */
 \d+(\.\d+)?             return 'NUMBER';
-[a-z][a-zA-Z1-9']*      return 'IDENTIFIER';
+[a-z][a-zA-Z0-9_']*     return 'IDENTIFIER';
 
 
 /* end of input */
