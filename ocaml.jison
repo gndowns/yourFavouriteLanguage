@@ -123,14 +123,14 @@ expression
 // the meat and potatoes of a real ocaml program
 definition
   : LET let_binding
-      { $$ = $2; }
+      { $$ = "var " + $2; }
 ;
 
 // used for variable and function assignment
 let_binding
   // var assignment
   : IDENTIFIER '=' expression
-      { $$ = var_assignment_str($1, $3); }
+      { $$ = $1 + " = " + $3; }
   // function assignment (ocaml functions always
   // have at least one arg)
   | IDENTIFIER parameters '=' expression
@@ -225,12 +225,8 @@ var concat_str = function(e1, operator, e2) {
   return e1 + ' ' + operator + ' ' + e2;
 }
 
-var var_assignment_str = function(identifier, val){
-  return 'var ' + identifier + ' = ' + val + ';';
-}
-
 var function_def_str = function(identifier, arg_list, val) {
-  return 'var ' + identifier + ' = ' +
+  return identifier + ' = ' +
     'function(' + arg_list + ') {\n'
       + '  return ' + val + ';\n' +
     '}'
