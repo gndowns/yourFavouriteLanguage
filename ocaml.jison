@@ -83,6 +83,9 @@ expression
   : simple_expression
       { $$ = $1; }
 
+  // non-simple expressions, listed below, include
+  // variable assignments, function definitions and calls
+
   // variable assignment
   | LET IDENTIFIER '=' expression
       { $$ = var_assignment_str($2, $4); }
@@ -148,9 +151,9 @@ list
 list_elements
   : %empty
       { $$ = ""; }
-  | expression
+  | simple_expression
       { $$ = $1; }
-  | expression ';' list_elements
+  | simple_expression ';' list_elements
       { $$ = $1 + ", " + $3; }
 ;
 
