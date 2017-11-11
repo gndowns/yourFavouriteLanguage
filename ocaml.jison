@@ -111,10 +111,6 @@ expression
   | expression "/." expression
       { $$ = concat_str($1, $2, $3); }
 
-  // variables, lists, and mathematical expressions
-  /* : simple_expression */
-      /* { $$ = $1; } */
-
   // function call with arguments
   /* | IDENTIFIER simple_expression_list %prec FUNCTION */
 
@@ -146,31 +142,6 @@ definitions
       { $$ = ""; }
   | definition definitions
       { $$ = $1 + '\n' + $2; }
-;
-
-simple_expression
-  : primitive_type
-      {$$ = $1; }
-
-  // list
-  | list
-      { $$ = $1; }
-
-  // mathematical expressions
-  | simple_expression '+' simple_expression
-      { $$ = concat_str($1, $2, $3); }
-  | simple_expression '-' simple_expression
-      { $$ = concat_str($1, $2, $3); }
-  | simple_expression '*' simple_expression
-      { $$ = concat_str($1, $2, $3); }
-  | simple_expression '/' simple_expression
-      { $$ = concat_str($1, $2, $3); }
-;
-
-simple_expression_list
-  : simple_expression
-  | simple_expression simple_expression_list
-      { $$ = $1; }
 ;
 
 // all primitive data types as well as variable names
