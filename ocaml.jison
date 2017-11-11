@@ -52,6 +52,9 @@ but its precedence is definitely below '::' */
 %left '@'
 %right '::'
 
+/* contextual precedence for function calls */
+%left FUNCTION
+
 /* language grammar */
 %%
 
@@ -73,28 +76,32 @@ content
   : %empty
     { yy.parser.prepend(""); }
   // recursive list of expressions
-  | expression content
+  | expression
     // separate expressions with newline
     { yy.parser.prepend($1 + '\n'); }
 ;
 
 expression
   // variables, lists, and mathematical expressions
-  : simple_expression
-      { $$ = $1; }
+  /* : simple_expression */
+      /* { $$ = $1; } */
 
   // non-simple expressions, listed below, include
   // variable assignments, function definitions and calls
 
   // variable assignment
-  | LET IDENTIFIER '=' expression
+  : LET IDENTIFIER '=' simple_expression
       { $$ = var_assignment_str($2, $4); }
   // function definition
-  | LET IDENTIFIER argument_list '=' expression
+  | LET IDENTIFIER argument_list '=' simple_expression
       { $$ = function_def_str($2, $3, $5); }
   // recursive function definition
-  | LET REC IDENTIFIER argument_list '=' expression
+  | LET REC IDENTIFIER argument_list '=' simple_expression
       { $$ = function_def_str($3, $4, $6); }
+
+  // function call with arguments
+  | IDENTIFIER simple_expression_list %prec FUNCTION
+
 ;
 
 simple_expression
