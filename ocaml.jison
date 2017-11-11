@@ -92,6 +92,17 @@ content
 expression
   // the simplest expression, an identifier or constant literal
   : primitive_type
+
+  // mathematical expressions
+  | expression '+' expression
+      { $$ = math_expr_str($1, $2, $3); }
+  | expression '-' expression
+      { $$ = math_expr_str($1, $2, $3); }
+  | expression '*' expression
+      { $$ = math_expr_str($1, $2, $3); }
+  | expression '/' expression
+      { $$ = math_expr_str($1, $2, $3); }
+
   // variables, lists, and mathematical expressions
   /* : simple_expression */
       /* { $$ = $1; } */
