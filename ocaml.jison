@@ -99,21 +99,21 @@ expression
 
   // mathematical expressions
   | expression '+' expression
-      { $$ = math_expr_str($1, $2, $3); }
+      { $$ = concat_str($1, $2, $3); }
   | expression '-' expression
-      { $$ = math_expr_str($1, $2, $3); }
+      { $$ = concat_str($1, $2, $3); }
   | expression '*' expression
-      { $$ = math_expr_str($1, $2, $3); }
+      { $$ = concat_str($1, $2, $3); }
   | expression '/' expression
-      { $$ = math_expr_str($1, $2, $3); }
+      { $$ = concat_str($1, $2, $3); }
   | expression "+." expression
-      { $$ = math_expr_str($1, $2, $3); }
+      { $$ = concat_str($1, $2, $3); }
   | expression "-." expression
-      { $$ = math_expr_str($1, $2, $3); }
+      { $$ = concat_str($1, $2, $3); }
   | expression "*." expression
-      { $$ = math_expr_str($1, $2, $3); }
+      { $$ = concat_str($1, $2, $3); }
   | expression "/." expression
-      { $$ = math_expr_str($1, $2, $3); }
+      { $$ = concat_str($1, $2, $3); }
 
   // variables, lists, and mathematical expressions
   /* : simple_expression */
@@ -147,13 +147,13 @@ simple_expression
 
   // mathematical expressions
   | simple_expression '+' simple_expression
-      { $$ = math_expr_str($1, $2, $3); }
+      { $$ = concat_str($1, $2, $3); }
   | simple_expression '-' simple_expression
-      { $$ = math_expr_str($1, $2, $3); }
+      { $$ = concat_str($1, $2, $3); }
   | simple_expression '*' simple_expression
-      { $$ = math_expr_str($1, $2, $3); }
+      { $$ = concat_str($1, $2, $3); }
   | simple_expression '/' simple_expression
-      { $$ = math_expr_str($1, $2, $3); }
+      { $$ = concat_str($1, $2, $3); }
 ;
 
 simple_expression_list
@@ -209,7 +209,7 @@ argument_list
 %%
 
 // utils
-var math_expr_str = function(e1, operator, e2) {
+var concat_str = function(e1, operator, e2) {
   return e1 + ' ' + operator + ' ' + e2;
 }
 
