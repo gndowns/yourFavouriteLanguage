@@ -20,11 +20,11 @@
 "rec"                   return 'REC';
 
 /* identifiers and literals */
+[a-z][a-zA-Z0-9_']*     return 'IDENTIFIER';
 \d+(\.)(\d+)?           return 'FLOAT';
 \d+                     return 'INTEGER';
-\'[a-zA-Z]\'               return 'CHAR';
-\"[a-zA-Z]+\"              return 'STRING';
-[a-z][a-zA-Z0-9_']*     return 'IDENTIFIER';
+\'[a-zA-Z]\'            return 'CHAR';
+\"[a-zA-Z]+\"           return 'STRING';
 
 /* operators */
 "="                     return '=';
