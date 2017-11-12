@@ -5,9 +5,10 @@ A humble ocaml-to-javascript transpiler I made to study for my [Functional Progr
 
 Ocaml Lex and Grammar rules are described in `ocaml.jison`, however the actual transpiler is not included here, it must be compiled with Jison.
 
-First, install jison with:
+First, install jison and other dependencies with:
 ```
 npm install jison -g
+npm install
 ```
 
 Now you can generate the parser with:
