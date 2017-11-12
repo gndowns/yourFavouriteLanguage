@@ -33,6 +33,8 @@
 "::"                    return '::';
 "@"                     return '@';
 
+"("                     return '(';
+")"                     return ')';
 "["                     return '[';
 "]"                     return ']';
 ";"                     return ';';
@@ -79,7 +81,7 @@ content
 expression_wrapper
   : expression
   // function call
-  | IDENTIFIER expressions
+  | IDENTIFIER arguments
       { $$ = $1 + '(' + $2 + ')'; }
 ;
 
@@ -168,6 +170,13 @@ list_elements
       { $$ = $1 + ", " + $3; }
 ;
 
+// what can be given to a function
+argument
+  : primitive_type
+  | '(' expression ')'
+      { $$ = $2; }
+;
+
 // RECURSIVELY DEFINED LISTS ===============
 // recurisve list of definitions
 definitions
@@ -187,9 +196,9 @@ parameters
 ;
 
 // list of expressions, used as args in function call
-expressions
-  : expression
-  | expression expressions
+arguments
+  : argument
+  | argument arguments
       { $$ = $1 + ',' + $2; }
 ;
 
