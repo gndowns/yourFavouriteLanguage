@@ -77,8 +77,18 @@ content
   : definitions
   // single expression followed by EOF
   // (primarily for use in interpreter mode)
-  | expression
+  | expression_wrapper
 ;
+
+// allows us to differentiate between simple expressions and
+// function calls
+expression_wrapper
+  : expression
+  // function call
+  | IDENTIFIER expressions
+      { $$ = $1 + '(' + $2 + ')'; }
+;
+
 
 expression
   // the simplest expression, an identifier or constant literal
@@ -116,13 +126,13 @@ definition
 // used for variable and function assignment
 let_binding
   // var assignment
-  : IDENTIFIER '=' expression
+  : IDENTIFIER '=' expression_wrapper
       { $$ = $1 + " = " + $3; }
   // function assignment (ocaml functions always
   // have at least one arg)
-  | IDENTIFIER parameters '=' expression
+  | IDENTIFIER parameters '=' expression_wrapper
       { $$ = function_def_str($1, $2, $4); }
-  | REC IDENTIFIER parameters '=' expression
+  | REC IDENTIFIER parameters '=' expression_wrapper
       { $$ = function_def_str($2, $3, $5); }
 ;
 
@@ -178,6 +188,13 @@ parameters
   : IDENTIFIER
   | IDENTIFIER parameters
       { $$ = $1 + ', ' +  $2; }
+;
+
+// list of expressions, used as args in function call
+expressions
+  : expression
+  | expression expressions
+      { $$ = $1 + ',' + $2; }
 ;
 
 %%
