@@ -82,21 +82,21 @@ expression
 
   // mathematical expressions
   | expression '+' expression
-      { $$ = $1 + ' ' + $2 + ' ' + $3; }
+      { $$ = $1 + " + " + $3; }
   | expression '-' expression
-      { $$ = $1 + ' ' + $2 + ' ' + $3; }
+      { $$ = $1 + " - " + $3; }
   | expression '*' expression
-      { $$ = $1 + ' ' + $2 + ' ' + $3; }
+      { $$ = $1 + " * " + $3; }
   | expression '/' expression
-      { $$ = $1 + ' ' + $2 + ' ' + $3; }
+      { $$ = $1 + " / " + $3; }
   | expression "+." expression
-      { $$ = $1 + ' ' + $2 + ' ' + $3; }
+      { $$ = $1 + " + " + $3; }
   | expression "-." expression
-      { $$ = $1 + ' ' + $2 + ' ' + $3; }
+      { $$ = $1 + " - " + $3; }
   | expression "*." expression
-      { $$ = $1 + ' ' + $2 + ' ' + $3; }
+      { $$ = $1 + " * " + $3; }
   | expression "/." expression
-      { $$ = $1 + ' ' + $2 + ' ' + $3; }
+      { $$ = $1 + " / " + $3; }
 
   // function call
   | IDENTIFIER arguments
