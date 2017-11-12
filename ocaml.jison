@@ -73,18 +73,8 @@ content
   : definitions
   // single expression followed by EOF
   // (primarily for use in interpreter mode)
-  | expression_wrapper
+  | expression
 ;
-
-// allows us to differentiate between simple expressions and
-// function calls
-expression_wrapper
-  : expression
-  // function call
-  | IDENTIFIER arguments
-      { $$ = $1 + '(' + $2 + ')'; }
-;
-
 
 expression
   // the simplest expression, an identifier or constant literal
@@ -107,6 +97,11 @@ expression
       { $$ = concat_str($1, $2, $3); }
   | expression "/." expression
       { $$ = concat_str($1, $2, $3); }
+
+  // function call
+  | IDENTIFIER arguments
+      { $$ = $1 + '(' + $2 + ')'; }
+
 ;
 
 // the meat and potatoes of a real ocaml program
@@ -118,13 +113,13 @@ definition
 // used for variable and function assignment
 let_binding
   // var assignment
-  : IDENTIFIER '=' expression_wrapper
+  : IDENTIFIER '=' expression
       { $$ = $1 + " = " + $3; }
   // function assignment (ocaml functions always
   // have at least one arg)
-  | IDENTIFIER parameters '=' expression_wrapper
+  | IDENTIFIER parameters '=' expression
       { $$ = function_def_str($1, $2, $4); }
-  | REC IDENTIFIER parameters '=' expression_wrapper
+  | REC IDENTIFIER parameters '=' expression
       { $$ = function_def_str($2, $3, $5); }
 ;
 
@@ -195,7 +190,7 @@ parameters
 arguments
   : argument
   | argument arguments
-      { $$ = $1 + ',' + $2; }
+      { $$ = $1 + ", " + $2; }
 ;
 
 %%
