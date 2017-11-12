@@ -107,10 +107,6 @@ expression
       { $$ = concat_str($1, $2, $3); }
   | expression "/." expression
       { $$ = concat_str($1, $2, $3); }
-
-  // function call with arguments
-  /* | IDENTIFIER simple_expression_list %prec FUNCTION */
-
 ;
 
 // the meat and potatoes of a real ocaml program
