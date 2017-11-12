@@ -5,12 +5,6 @@
 
 %lex
 
-/* make parser available in grammar rules */
-%{
-  var parser = yy.parser;
-%}
-
-
 %%
 \s+                     /* skip whitespace */
 
@@ -136,15 +130,6 @@ let_binding
       { $$ = function_def_str($2, $3, $5); }
 ;
 
-// recurisve list of definitions
-definitions
-  // possible empty input, return empty string
-  : %empty
-      { $$ = ""; }
-  | definition definitions
-      { $$ = $1 + '\n' + $2; }
-;
-
 // all primitive data types as well as variable names
 primitive_type
   : IDENTIFIER
@@ -183,6 +168,17 @@ list_elements
       { $$ = $1 + ", " + $3; }
 ;
 
+// RECURSIVELY DEFINED LISTS ===============
+// recurisve list of definitions
+definitions
+  // possible empty input, return empty string
+  : %empty
+      { $$ = ""; }
+  | definition definitions
+      { $$ = $1 + '\n' + $2; }
+;
+
+
 // list of parameter identifiers in function definition
 parameters
   : IDENTIFIER
@@ -210,8 +206,4 @@ var function_def_str = function(identifier, arg_list, val) {
       + '  return ' + val + ';\n' +
     '}'
   ;
-}
-
-parser.prepend = function(str) {
-  this.outString = !this.outString ? str : str + this.outString;
 }
