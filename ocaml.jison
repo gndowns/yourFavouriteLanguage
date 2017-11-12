@@ -60,9 +60,6 @@ but its precedence is definitely below '::' */
 %left '@'
 %right '::'
 
-/* contextual precedence for function calls */
-%left FUNCTION
-
 /* language grammar */
 %%
 
@@ -70,13 +67,7 @@ but its precedence is definitely below '::' */
 input
   // ocaml source code, terminated with EOF
   : content EOF
-    {
-      return $1;
-      /* var outString = yy.parser.outString; */
-      /* // reset for next input */
-      /* yy.parser.outString = ''; */
-      /* return outString */
-    }
+    { return $1; }
 ;
 
 // the actual text of the ocaml input
