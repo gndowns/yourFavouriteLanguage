@@ -108,6 +108,10 @@ expression
 definition
   : LET let_binding
       { $$ = "var " + $2; }
+
+  // nested functions
+  | LET let_binding IN expression
+      { $$ = nested_function_str($2,$4); }
 ;
 
 // used for variable and function assignment
@@ -202,4 +206,8 @@ var function_def_str = function(identifier, arg_list, val) {
       + '  return ' + val + ';\n' +
     '}'
   ;
+}
+
+var nested_function_str = function(let_binding, expression) {
+  return "var " + let_binding + "\n" + expression;
 }
