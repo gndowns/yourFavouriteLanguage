@@ -82,21 +82,21 @@ expression
 
   // mathematical expressions
   | expression '+' expression
-      { $$ = concat_str($1, $2, $3); }
+      { $$ = $1 + ' ' + $2 + ' ' + $3; }
   | expression '-' expression
-      { $$ = concat_str($1, $2, $3); }
+      { $$ = $1 + ' ' + $2 + ' ' + $3; }
   | expression '*' expression
-      { $$ = concat_str($1, $2, $3); }
+      { $$ = $1 + ' ' + $2 + ' ' + $3; }
   | expression '/' expression
-      { $$ = concat_str($1, $2, $3); }
+      { $$ = $1 + ' ' + $2 + ' ' + $3; }
   | expression "+." expression
-      { $$ = concat_str($1, $2, $3); }
+      { $$ = $1 + ' ' + $2 + ' ' + $3; }
   | expression "-." expression
-      { $$ = concat_str($1, $2, $3); }
+      { $$ = $1 + ' ' + $2 + ' ' + $3; }
   | expression "*." expression
-      { $$ = concat_str($1, $2, $3); }
+      { $$ = $1 + ' ' + $2 + ' ' + $3; }
   | expression "/." expression
-      { $$ = concat_str($1, $2, $3); }
+      { $$ = $1 + ' ' + $2 + ' ' + $3; }
 
   // function call
   | IDENTIFIER arguments
@@ -196,10 +196,6 @@ arguments
 %%
 
 // utils
-var concat_str = function(e1, operator, e2) {
-  return e1 + ' ' + operator + ' ' + e2;
-}
-
 var function_def_str = function(identifier, arg_list, val) {
   return identifier + ' = ' +
     'function(' + arg_list + ') {\n'
