@@ -102,6 +102,11 @@ expression
   | IDENTIFIER arguments
       { $$ = $1 + '(' + $2 + ')'; }
 
+  | LET let_binding IN expression
+      { $$ = nested_function_str($2,$4); }
+
+   // for pattern matching build 'splitting tree'
+  // menage did it for ocaml
 ;
 
 // the meat and potatoes of a real ocaml program
@@ -110,8 +115,10 @@ definition
       { $$ = "var " + $2; }
 
   // nested functions
-  | LET let_binding IN expression
-      { $$ = nested_function_str($2,$4); }
+  // this should technically be an expression,
+  // not a definition...?
+  /* | LET let_binding IN expression */
+      /* { $$ = nested_function_str($2,$4); } */
 ;
 
 // used for variable and function assignment
